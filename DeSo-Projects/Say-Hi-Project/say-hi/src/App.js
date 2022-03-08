@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Box, Grid, Stack, Button } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import DesoIdentity from "./helpers/desoIdentity";
 import DesoApi from "./helpers/desoApi";
 import UserInformation from "./components/UserInformation";
+import LogInOut from "./components/LogInOut";
 
 const IdentityUsersKey = "identityUsersV2";
 
@@ -62,7 +63,6 @@ function App() {
         }}
       ></iframe>
       <Grid container>
-        <Grid item sm={0} lg={4}></Grid>
         <Grid
           item
           sm={12}
@@ -74,28 +74,17 @@ function App() {
           }}
         >
           <Stack>
-            <Box sx={{ mb: 2, mt: 2 }}>
-              {loggedIn ? (
-                <Button variant="contained" onClick={logout}>
-                  Log Out
-                </Button>
-              ) : (
-                <Button variant="contained" onClick={login}>
-                  Login
-                </Button>
-              )}
-            </Box>
-            {loggedIn ? (
-              <>
-                <Box sx={{ mb: 2 }}>
-                  <UserInformation
-                    desoApi={desoApi}
-                    desoIdentity={desoIdentity}
-                    publicKey={publicKey}
-                  />
-                </Box>
-              </>
-            ) : null}
+            <LogInOut loggedIn={loggedIn} login={login} logout={logout} />
+
+            {loggedIn && (
+              <Box sx={{ mb: 2 }}>
+                <UserInformation
+                  desoApi={desoApi}
+                  desoIdentity={desoIdentity}
+                  publicKey={publicKey}
+                />
+              </Box>
+            )}
           </Stack>
         </Grid>
         <Grid item sm={0} lg={4}></Grid>
