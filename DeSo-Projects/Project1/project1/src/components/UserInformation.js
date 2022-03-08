@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 const UserInformation = ({ desoApi, desoIdentity, publicKey }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [newDescription, setNewDescription] = useState("");
+  const [deso, setDeso] = useState(null);
 
   const getUserInfo = async () => {
     const result = await desoApi.getSingleProfile(publicKey, "");
@@ -15,12 +16,25 @@ const UserInformation = ({ desoApi, desoIdentity, publicKey }) => {
     setUserInfo(result?.Profile);
   };
 
+  // Not sure why this gives me a response with Users as empty list
+  const getUserStateless = async () => {
+    const result = await desoApi.getUserStateless(publicKey);
+
+    if (!result) {
+      return;
+    }
+
+    console.log(result);
+    setDeso(result);
+  };
+
   useEffect(() => {
     if (!publicKey) {
       return;
     }
 
     getUserInfo();
+    getUserStateless();
   }, []);
 
   useEffect(() => {
@@ -45,6 +59,7 @@ const UserInformation = ({ desoApi, desoIdentity, publicKey }) => {
   return (
     <div>
       <p>Welcome back, <b>@{userInfo?.Username}</b></p>
+      <p>You have <b>_ $DESO</b></p>
 
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Typography>Your Description is: </Typography>

@@ -8,6 +8,27 @@ class DesoApi {
     this.client = null;
     this.baseUrl = DEFAULT_NODE_URL;
   }
+  
+  async getUserStateless(publicKey) {
+    if (!publicKey) {
+      console.log("publicKey is required");
+      return;
+    }
+
+    const path = "/v0/get-users-stateless";
+    const data = {
+      PublicKeyBase58Check: [publicKey],
+      SkipForLeaderBoard: true,
+    };
+
+    try {
+      const result = await this.getClient().post(path, data);
+      return result.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 
   async getSingleProfile(publicKey, username) {
     if (!publicKey) {
